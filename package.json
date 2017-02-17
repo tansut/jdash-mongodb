@@ -17,7 +17,7 @@
     "@types/es6-shim": "^0.31.32"
   },
   "dependencies": {
-    "jdash-core": "file:../jdash-core",
+    "jdash-core": "git+ssh://git@bitbucket.org:kalitte/jdash-core.git",
     "mongoose": "^4.8.3"
   },
   "author": "",

@@ -1,10 +1,10 @@
-import { CreateResult } from 'jdash-core/lib';
-import { IJDashProvider, Query, QueryResult, DashboardModel, DashboardCreateModel } from 'jdash-core';
+import { CreateResult, IJDashProvider, Query, QueryResult, DashboardModel, DashboardCreateModel } from 'jdash-core';
 import * as mongoose from 'mongoose';
 
 export interface IProviderOptions {
     connection: mongoose.Connection;
 }
+
 export class MongoDbProvider implements IJDashProvider {
     constructor(public options: IProviderOptions) {
 
