@@ -30,28 +30,7 @@ export class MongoDbProvider implements IJDashProvider {
             title: model.title,
             description: model.description
         }
-        // var newItem = new DashboardEntityModel(newEntity);
-        // return newItem.save((err, d) => {
-        //     debugger;
-        // }).then(item => {
-        //     debugger;
-        //     var createResult: CreateResult = {
-        //         id: item._id.toString()
-        //     };
-        //     return createResult;
-        // })
-        // return new Promise((res, rej) => {
-        //     debugger;
-        //     var conn = this.connection;
-        //     var conn2 = mongoose;
-        //     //var m1 = this.connection.model<IDashboardDocument>('dashboard');
 
-        //     //var m = mongoose.connection.model<IDashboardDocument>('dashboard');
-        //     DashboardEntityModel.create({}, )
-        //     // DashboardEntityModel.find().then((res) => {
-        //     //     debugger;
-        //     // })
-        // })
         return this.dashboardModel.create(newEntity).then(newDocument => {
             debugger;
             var createResult: CreateResult = {
@@ -62,8 +41,8 @@ export class MongoDbProvider implements IJDashProvider {
     }
 }
 
-// (<any>mongoose).Promise = global.Promise;
-mongoose.set('debug', true);
+(<any>mongoose).Promise = global.Promise;
+
 
 
 export default (options: IProviderOptions) => new MongoDbProvider(options);

@@ -10,18 +10,13 @@ export default class Helper {
 
     static createConnection(connStr: string) {
         return new Promise<mongoose.Connection>((resolve, reject) => {
-            var oc = mongoose.connect(connStr);
-            var conn = mongoose.connection;
+            var conn = mongoose.createConnection(connStr);
             conn.on('connected', (connx) => {
-                require('../db/dashboard').default(conn);
                 resolve(conn);
             })
-
             conn.on('error', (err) => {
                 reject(err);
             })
-
-
         })
     }
 }

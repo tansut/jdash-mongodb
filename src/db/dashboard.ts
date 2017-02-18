@@ -32,6 +32,6 @@ export let DashboardEntityModel: DBModel<IDashboardDocument>;
 
 
 export default (conn: mongoose.Connection) => {
-    DashboardEntityModel = conn.model<IDashboardDocument>('dash', DashboardSchema);
+    DashboardEntityModel = conn.model<IDashboardDocument>('jdash_dashboard', DashboardSchema);
     return DashboardEntityModel;
 };

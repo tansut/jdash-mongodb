@@ -26,6 +26,7 @@ export class DBSchema extends mongoose.Schema {
     }
 
     preSave(doc: IDBDocument, next: Function) {
+        next()
         // try {
         //     if (!doc.isNew) {
         //         doc._meta.updated = moment.utc().toDate();
