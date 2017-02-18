@@ -3,25 +3,90 @@ import * as mocha from 'mocha';
 
 import Helper from './helper';
 import * as jcore from 'jdash-core';
+var should = require('should');
 
 export default function () {
+
     describe('dashboard', function () {
-        var newDashboard: DashboardModel;
         it('should create a dashboard', function () {
             var provider = Helper.provider;
+            var dashboardCreateModel: DashboardCreateModel = {
+                title: 'Foo title',
+                description: 'eewrew',
+                id: "",
+                user: Helper.testUser
+            };
+            return provider.createDashboard(dashboardCreateModel).then(result => {
 
+            })
+        });
+
+        it('should populate 100 dashboards for user', function () {
+            var provider = Helper.provider;
+            var promises = [];
+            for (var i = 0; i < 100; i++) {
+                var dashboardCreateModel: DashboardCreateModel = {
+                    title: 'Foo title' + i,
+                    description: 'eewrew',
+                    id: "",
+                    user: Helper.testUser
+                };
+                promises.push(provider.createDashboard(dashboardCreateModel));
+            }
+
+            return promises;
+        });
+
+        it('should create and gets the dashboard', function () {
+            var provider = Helper.provider;
             var newDashboard: DashboardCreateModel = {
                 title: 'Foo title',
                 description: 'eewrew',
-                id: ""
+                id: "",
+                user: Helper.testUser
             }
             return provider.createDashboard(newDashboard).then(result => {
-                newDashboard = {
-                    id: result.id,
-                    title: newDashboard.title,
-                    description: newDashboard.title
-                }
+                return provider.getDashboard(result.id);
             })
+        });
+
+        it('should get users dashboards all', function () {
+            var provider = Helper.provider;
+            return provider.getDashboardsOfUser(Helper.testUser).then((dashes) => {
+                should.equal(dashes.data.length, 102);
+                should.equal(dashes.hasMore, false);
+            });
+        });
+
+        it('should get users first 5 dashboards', function () {
+            var provider = Helper.provider;
+            return provider.getDashboardsOfUser(Helper.testUser, { limit: 5, startFrom: 0 }).then((dashes) => {
+                should.equal(dashes.data.length, 5);
+                should.equal(dashes.hasMore, true);
+            });
+        });
+        it('should get users first 15 dashboards', function () {
+            var provider = Helper.provider;
+            return provider.getDashboardsOfUser(Helper.testUser, { limit: 15, startFrom: 0 }).then((dashes) => {
+                should.equal(dashes.data.length, 15);
+                should.equal(dashes.hasMore, true);
+            });
+        });
+
+        it('should get users first 150 dashboard', function () {
+            var provider = Helper.provider;
+            return provider.getDashboardsOfUser(Helper.testUser, { limit: 150, startFrom: 0 }).then((dashes) => {
+                should.equal(dashes.data.length, 102);
+                should.equal(dashes.hasMore, false);
+            });
+        });
+        
+        it('should get users first 20 dashboard from start index 90', function () {
+            var provider = Helper.provider;
+            return provider.getDashboardsOfUser(Helper.testUser, { limit: 20, startFrom: 90 }).then((dashes) => {
+                should.equal(dashes.data.length, 12);
+                should.equal(dashes.hasMore, false);
+            });
         });
     });
 }

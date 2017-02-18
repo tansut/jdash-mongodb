@@ -12,8 +12,9 @@ export declare class MongoDbProvider implements IJDashProvider {
     connection: mongoose.Connection;
     dashboardModel: DBModel<IDashboardDocument>;
     constructor(options: IProviderOptions);
+    private dashDocumentToDashModel(e);
     getDashboardsOfUser(username: string, query?: Query): Promise<QueryResult<DashboardModel>>;
-    getDashboard(id: string): Promise<DashboardCreateModel>;
+    getDashboard(id: string): Promise<DashboardModel>;
     createDashboard(model: DashboardCreateModel): Promise<CreateResult>;
 }
 declare var _default: (options: IProviderOptions) => MongoDbProvider;

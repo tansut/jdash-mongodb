@@ -1,8 +1,10 @@
+import { LayoutModel, Metadata } from 'jdash-core/lib';
 import { CreateResult, IJDashProvider, Query, QueryResult, DashboardModel, DashboardCreateModel } from 'jdash-core';
 import * as mongoose from 'mongoose';
 import { IDashboardDocument, DashboardEntity, DashboardEntityModel } from './db/dashboard';
 import dashboard from './db/dashboard';
 import { DBModel } from './db';
+import helper from './helper';
 
 export interface IProviderOptions {
     connection: mongoose.Connection;
@@ -17,22 +19,68 @@ export class MongoDbProvider implements IJDashProvider {
         this.dashboardModel = dashboard(this.connection);
     }
 
-    // private getUsername() {
-    //     this.options.credentialCallback && this.options.credentialCallback();
-    // }
-
-    getDashboardsOfUser(username: string, query?: Query): Promise<QueryResult<DashboardModel>> {
-        return null;
+    private dashDocumentToDashModel(e: IDashboardDocument): DashboardModel {
+        return <DashboardModel>{
+            config: e.config,
+            description: e.description,
+            id: e._id.toString(),
+            layout: e.layout,
+            title: e.title
+        }
     }
 
-    getDashboard(id: string): Promise<DashboardCreateModel> {
-        return null;
+    getDashboardsOfUser(username: string, query?: Query): Promise<QueryResult<DashboardModel>> {
+        var userQuery = this.dashboardModel.find({ 'user': username });
+        var countQuery = this.dashboardModel.find({ 'user': username }).count();
+        var selectQuery;
+
+        if (query) {
+            selectQuery = userQuery.sort({ createdAt: -1 }).skip(query.startFrom).limit(query.limit);
+        } else {
+            selectQuery = userQuery;
+        }
+
+        selectQuery = selectQuery.then((dashEntities) => {
+            return dashEntities.map(this.dashDocumentToDashModel);
+        });
+
+        var resultPromise = Promise.all<any>([countQuery, userQuery]).then((results) => {
+            var count = <number>results[0];
+            var models = <Array<DashboardModel>>results[1];
+
+            var hasMore = false;
+            if (query) {
+                if (query.limit + query.startFrom < count)
+                    hasMore = true;
+            } else {
+                hasMore = count > models.length;
+            }
+
+            var returnValue = <QueryResult<DashboardModel>>{
+                data: models,
+                hasMore: hasMore
+            }
+            return returnValue;
+        });
+
+        return resultPromise;
+    }
+
+    getDashboard(id: string): Promise<DashboardModel> {
+        return this.dashboardModel.findById(id).then((item) => { return this.dashDocumentToDashModel(item); });
     }
 
     createDashboard(model: DashboardCreateModel): Promise<CreateResult> {
         var newEntity: DashboardEntity = {
             title: model.title,
-            description: model.description
+            description: model.description,
+            user: model.user,
+            createdAt: helper.utcNow(),
+            config: model.config || {},
+            layout: <LayoutModel>{
+                config: {},
+                dashlets: {}
+            }
         }
 
         return this.dashboardModel.create(newEntity).then(newDocument => {

@@ -1,6 +1,7 @@
 import * as mocha from 'mocha';
 import Helper from './helper';
 import dashboardtests from './dashboard';
+require('should');
 
 describe('jdash-mongodb Tests', function () {
     before(function (done) {
