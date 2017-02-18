@@ -17,6 +17,10 @@ export class MongoDbProvider implements IJDashProvider {
         this.dashboardModel = dashboard(this.connection);
     }
 
+    // private getUsername() {
+    //     this.options.credentialCallback && this.options.credentialCallback();
+    // }
+
     getDashboardsOfUser(username: string, query?: Query): Promise<QueryResult<DashboardModel>> {
         return null;
     }
@@ -32,7 +36,6 @@ export class MongoDbProvider implements IJDashProvider {
         }
 
         return this.dashboardModel.create(newEntity).then(newDocument => {
-            debugger;
             var createResult: CreateResult = {
                 id: newDocument._id.toString()
             };
@@ -42,7 +45,4 @@ export class MongoDbProvider implements IJDashProvider {
 }
 
 (<any>mongoose).Promise = global.Promise;
-
-
-
 export default (options: IProviderOptions) => new MongoDbProvider(options);
