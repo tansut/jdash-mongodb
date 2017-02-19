@@ -6,7 +6,7 @@ import * as jcore from 'jdash-core';
 var should = require('should');
 
 export default function () {
-
+    var dashboardCount = 0;
     describe('dashboard', function () {
         it('should create a dashboard', function () {
             var provider = Helper.provider;
@@ -17,7 +17,7 @@ export default function () {
                 user: Helper.testUser
             };
             return provider.createDashboard(dashboardCreateModel).then(result => {
-
+                dashboardCount++;
             })
         });
 
@@ -32,6 +32,7 @@ export default function () {
                     user: Helper.testUser
                 };
                 promises.push(provider.createDashboard(dashboardCreateModel));
+                dashboardCount++;
             }
 
             return promises;
@@ -46,6 +47,7 @@ export default function () {
                 user: Helper.testUser
             }
             return provider.createDashboard(newDashboard).then(result => {
+                dashboardCount++;
                 return provider.getDashboard(result.id);
             })
         });
@@ -76,11 +78,11 @@ export default function () {
         it('should get users first 150 dashboard', function () {
             var provider = Helper.provider;
             return provider.getDashboardsOfUser(Helper.testUser, { limit: 150, startFrom: 0 }).then((dashes) => {
-                should.equal(dashes.data.length, 102);
+                should.equal(dashes.data.length, dashboardCount);
                 should.equal(dashes.hasMore, false);
             });
         });
-        
+
         it('should get users first 20 dashboard from start index 90', function () {
             var provider = Helper.provider;
             return provider.getDashboardsOfUser(Helper.testUser, { limit: 20, startFrom: 90 }).then((dashes) => {
