@@ -26,7 +26,8 @@ export class MongoDbProvider implements IDBProvider {
             description: e.description,
             id: e._id.toString(),
             layout: e.layout,
-            title: e.title
+            title: e.title,
+            shareWith: e.shareWith
         }
     }
 
