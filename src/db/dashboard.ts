@@ -6,10 +6,12 @@ import { ObjectID } from 'mongodb';
 
 
 export class DashboardEntity {
+    appid: string;
     title: string;
     description: string;
     user: string;
     createdAt: Date;
+    shareWith?: string;
     config: { [key: string]: any };
     layout: LayoutModel
 }
@@ -27,12 +29,31 @@ class Schema extends DBSchema {
 }
 
 const DashboardSchema = new Schema({
+    appid: { type: String, required: true },
     title: { type: String, required: false },
     description: { type: String, required: false },
+    shareWith: { type: String, required: false },
     user: { type: String, required: true },
     createdAt: { type: Date, required: true },
-    layout: { type: Object, required: true } 
+    layout: { type: Object, required: true }
 })
+
+DashboardSchema.index({
+    appid: 1,
+    user: 1
+}, {});
+
+DashboardSchema.index({
+    appid: 1,
+    createdAt: 1
+}, {});
+
+
+DashboardSchema.index({
+    appid: 1,
+    shareWith: 1
+}, {});
+
 
 export let DashboardEntityModel: DBModel<IDashboardDocument>;
 

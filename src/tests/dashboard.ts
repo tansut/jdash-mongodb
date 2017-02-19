@@ -16,7 +16,7 @@ export default function () {
                 id: "",
                 user: Helper.testUser
             };
-            return provider.createDashboard(dashboardCreateModel).then(result => {
+            return provider.createDashboard(Helper.appid, dashboardCreateModel).then(result => {
 
             })
         });
@@ -31,7 +31,7 @@ export default function () {
                     id: "",
                     user: Helper.testUser
                 };
-                promises.push(provider.createDashboard(dashboardCreateModel));
+                promises.push(provider.createDashboard(Helper.appid, dashboardCreateModel));
             }
 
             return promises;
@@ -45,14 +45,17 @@ export default function () {
                 id: "",
                 user: Helper.testUser
             }
-            return provider.createDashboard(newDashboard).then(result => {
-                return provider.getDashboard(result.id);
+            return provider.createDashboard(Helper.appid, newDashboard).then(result => {
+                return provider.getDashboard(Helper.appid, result.id);
             })
         });
 
         it('should get users dashboards all', function () {
             var provider = Helper.provider;
-            return provider.getDashboardsOfUser(Helper.testUser).then((dashes) => {
+            return provider.searchDashboards({
+                appid: Helper.appid,
+                user: Helper.testUser
+            }).then((dashes) => {
                 should.equal(dashes.data.length, 102);
                 should.equal(dashes.hasMore, false);
             });
@@ -60,14 +63,20 @@ export default function () {
 
         it('should get users first 5 dashboards', function () {
             var provider = Helper.provider;
-            return provider.getDashboardsOfUser(Helper.testUser, { limit: 5, startFrom: 0 }).then((dashes) => {
+            return provider.searchDashboards({
+                appid: Helper.appid,
+                user: Helper.testUser
+            }, { limit: 5, startFrom: 0 }).then((dashes) => {
                 should.equal(dashes.data.length, 5);
                 should.equal(dashes.hasMore, true);
             });
         });
         it('should get users first 15 dashboards', function () {
             var provider = Helper.provider;
-            return provider.getDashboardsOfUser(Helper.testUser, { limit: 15, startFrom: 0 }).then((dashes) => {
+            return provider.searchDashboards({
+                appid: Helper.appid,
+                user: Helper.testUser
+            }, { limit: 15, startFrom: 0 }).then((dashes) => {
                 should.equal(dashes.data.length, 15);
                 should.equal(dashes.hasMore, true);
             });
@@ -75,15 +84,21 @@ export default function () {
 
         it('should get users first 150 dashboard', function () {
             var provider = Helper.provider;
-            return provider.getDashboardsOfUser(Helper.testUser, { limit: 150, startFrom: 0 }).then((dashes) => {
+            return provider.searchDashboards({
+                appid: Helper.appid,
+                user: Helper.testUser
+            }, { limit: 150, startFrom: 0 }).then((dashes) => {
                 should.equal(dashes.data.length, 102);
                 should.equal(dashes.hasMore, false);
             });
         });
-        
+
         it('should get users first 20 dashboard from start index 90', function () {
             var provider = Helper.provider;
-            return provider.getDashboardsOfUser(Helper.testUser, { limit: 20, startFrom: 90 }).then((dashes) => {
+            return provider.searchDashboards({
+                appid: Helper.appid,
+                user: Helper.testUser
+            }, { limit: 20, startFrom: 90 }).then((dashes) => {
                 should.equal(dashes.data.length, 12);
                 should.equal(dashes.hasMore, false);
             });
