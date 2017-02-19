@@ -4,6 +4,7 @@ import { IProviderOptions, MongoDbProvider } from '../';
 export default class Helper {
     static provider: MongoDbProvider;
     static testUser: string = "user_" + Math.ceil(Math.random() * 999999);
+    static appid: string = "appid_" + Math.ceil(Math.random() * 999999);
     static createProvider(options: IProviderOptions) {
         this.provider = new MongoDbProvider(options);
     }

@@ -3,10 +3,12 @@ import { LayoutModel } from 'jdash-core/lib';
 import { DBModel, IDBDocument } from './';
 import * as mongoose from 'mongoose';
 export declare class DashboardEntity {
+    appid: string;
     title: string;
     description: string;
     user: string;
     createdAt: Date;
+    shareWith?: string;
     config: {
         [key: string]: any;
     };
