@@ -1,5 +1,5 @@
 /// <reference types="mongoose" />
-/// <reference types="es6-shim" />
+/// <reference types="es6-promise" />
 import { IDBProvider, ISearchDashboard } from 'jdash-api/lib/definitions';
 import { CreateResult, Query, QueryResult, DashboardModel, DashboardCreateModel } from 'jdash-core';
 import * as mongoose from 'mongoose';

@@ -14,6 +14,9 @@ export default function () {
                 title: 'Foo title',
                 description: 'eewrew',
                 id: "",
+                layout: {
+                    moduleId: 'foo'
+                },
                 user: Helper.testUser
             };
             return provider.createDashboard(Helper.appid, dashboardCreateModel).then(result => {

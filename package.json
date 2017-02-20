@@ -8,7 +8,7 @@
     "test": "mocha -u tdd --timeout 999999 --colors lib/tests"
   },
   "devDependencies": {
-    "@types/es6-shim": "^0.31.32",
+    "@types/es6-promise": "0.0.32",
     "@types/mocha": "^2.2.39",
     "@types/mongoose": "^4.7.5",
     "gulp": "^3.9.1",
