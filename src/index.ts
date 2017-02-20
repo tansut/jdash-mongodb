@@ -46,8 +46,7 @@ export class MongoDbProvider implements IDBProvider {
         var q = <any>{};
 
         search.appid && (q.appid = { $in: search.appid });
-        search.user && (q.appid = { $in: search.user });
-        search.user && (q.appid = { $in: search.user });
+        search.user && (q.user = { $in: search.user });
         var baseQuery = this.dashboardModel.find(q).sort({ createdAt: -1 }).skip(query.startFrom).limit(query.limit);
         var countQuery = this.dashboardModel.find(q).count();
 

@@ -6,7 +6,8 @@ import * as jcore from 'jdash-core';
 var should = require('should');
 
 export default function () {
-
+    var dashboardCount = 0;
+    var maximumLimit = 100;
     describe('dashboard', function () {
         it('should create a dashboard', function () {
             var provider = Helper.provider;
@@ -19,8 +20,9 @@ export default function () {
                 },
                 user: Helper.testUser
             };
+ 
             return provider.createDashboard(Helper.appid, dashboardCreateModel).then(result => {
-
+                dashboardCount++; 
             })
         });
 
@@ -33,11 +35,12 @@ export default function () {
                     description: 'eewrew',
                     id: "",
                     user: Helper.testUser
-                };
-                promises.push(provider.createDashboard(Helper.appid, dashboardCreateModel));
+                }; 
+                promises.push(provider.createDashboard(Helper.appid, dashboardCreateModel)); 
             }
-
-            return promises;
+            return Promise.all(promises).then(function(){  
+                dashboardCount += promises.length;
+            });
         });
 
         it('should create and gets the dashboard', function () {
@@ -48,7 +51,9 @@ export default function () {
                 id: "",
                 user: Helper.testUser
             }
+ 
             return provider.createDashboard(Helper.appid, newDashboard).then(result => {
+                dashboardCount++;               
                 return provider.getDashboard(Helper.appid, result.id);
             })
         });
@@ -59,8 +64,8 @@ export default function () {
                 appid: Helper.appid,
                 user: Helper.testUser
             }).then((dashes) => {
-                should.equal(dashes.data.length, 102);
-                should.equal(dashes.hasMore, false);
+                should.equal(dashes.data.length, maximumLimit);
+                should.equal(dashes.hasMore, true);
             });
         });
 
@@ -85,14 +90,15 @@ export default function () {
             });
         });
 
-        it('should get users first 150 dashboard', function () {
+        it('should have more dashboards', function () {
             var provider = Helper.provider;
+ 
             return provider.searchDashboards({
                 appid: Helper.appid,
                 user: Helper.testUser
-            }, { limit: 150, startFrom: 0 }).then((dashes) => {
-                should.equal(dashes.data.length, 102);
-                should.equal(dashes.hasMore, false);
+            }, { limit: 50, startFrom: 0 }).then((dashes) => {
+                should.equal(dashes.data.length, 50);
+                should.equal(dashes.hasMore, true);
             });
         });
 
