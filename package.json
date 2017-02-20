@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "jdash-core": "git+ssh://git@bitbucket.org:kalitte/jdash-core.git",
-    "jdash-api": "git+ssh://git@bitbucket.org:kalitte/jdash-api.git",
+    "jdash-api-core": "git+ssh://git@bitbucket.org:kalitte/jdash-api-core.git",
     "mongodb": "^2.2.24",
     "mongoose": "^4.8.3"
   },
