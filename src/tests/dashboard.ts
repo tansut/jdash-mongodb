@@ -15,6 +15,9 @@ export default function () {
                 title: 'Foo title',
                 description: 'eewrew',
                 id: "",
+                layout: {
+                    moduleId: 'foo'
+                },
                 user: Helper.testUser
             };
  

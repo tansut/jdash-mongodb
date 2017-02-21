@@ -1,4 +1,4 @@
-/// <reference types="es6-shim" />
+/// <reference types="es6-promise" />
 /// <reference types="mongoose" />
 import * as mongoose from 'mongoose';
 import { IProviderOptions, MongoDbProvider } from '../';
