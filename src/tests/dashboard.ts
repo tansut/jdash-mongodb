@@ -115,14 +115,8 @@ export default function () {
                 appid: Helper.appid,
                 user: Helper.testUser
             }, { limit: 20, startFrom: 90 }).then((dashes) => {
-                var hasMore = true;
-                var length = 20;
-                if (dashboardCount > 90 + 20) {
-                    length = dashboardCount - 90;
-                    hasMore = false;
-                }
-                should.equal(dashes.data.length, length);
-                should.equal(dashes.hasMore, hasMore);
+                should.equal(dashes.data.length, 12);
+                should.equal(dashes.hasMore, false);
             });
         });
     });

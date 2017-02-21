@@ -26,7 +26,7 @@ class Schema extends DBSchema {
 }
 
 const DashletSchema = new Schema({
-    moduleId: { type: String, required: true },
+    dashletModel: { type: String, required: true },
     dashboardId: { type: String, required: true },
     title: { type: String, required: false },
     description: { type: String, required: false },
@@ -56,6 +56,6 @@ export let DashletEntityModel: DBModel<IDashletDocument>;
 
 
 export default (conn: mongoose.Connection) => {
-    DashletEntityModel = conn.model<IDashletDocument>('jdash_dashboard', DashletSchema);
+    DashletEntityModel = conn.model<IDashletDocument>('jdash_dashlet', DashletSchema);
     return DashletEntityModel;
 };
