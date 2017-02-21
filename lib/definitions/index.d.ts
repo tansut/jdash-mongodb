@@ -22,7 +22,7 @@ export declare class MongoDbProvider implements IDBProvider {
     createDashboard(model: core.DashboardModel): Promise<core.CreateResult>;
     deleteDashboard(appid: string, id: string): Promise<any>;
     updateDashboard(appid: string, id: string, updateValues: core.DashboardUpdateModel): Promise<any>;
-    createDashlet(model: core.DashletModel): Promise<core.CreateResult>;
+    createDashlet(model: core.DashletCreateModel): Promise<core.CreateResult>;
     searchDashlets(search: ISearchDashlet): Promise<Array<core.DashletModel>>;
     deleteDashlet(id: string): Promise<any>;
     updateDashlet(id: string, updateValues: core.DashletUpdateModel): Promise<any>;

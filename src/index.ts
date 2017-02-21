@@ -102,7 +102,7 @@ export class MongoDbProvider implements IDBProvider {
             shareWith: model.shareWith,
             description: model.description,
             user: model.user,
-            createdAt: model.createdAt,
+            createdAt: helper.utcNow(),            
             config: model.config || {},
             layout: model.layout
         }
@@ -130,21 +130,25 @@ export class MongoDbProvider implements IDBProvider {
         });
     }
 
-    createDashlet(model: core.DashletModel): Promise<core.CreateResult> {
+    createDashlet(model: core.DashletCreateModel): Promise<core.CreateResult> {
         var newEntity: DashletEntity = {
             dashboardId: model.dashboardId,
             configuration: model.configuration || {},
             moduleId: model.moduleId,
             title: model.title,
             description: model.description,
-            createdAt: model.createdAt
+            createdAt: helper.utcNow()
         }
+
         return this.dashletModel.create(newEntity).then(newDocument => {
             var createResult: core.CreateResult = {
                 id: newDocument._id.toString()
             };
             return createResult;
-        })
+        }).catch((err)=> {
+            console.log(err);
+            throw err;
+        });
     }
 
     searchDashlets(search: ISearchDashlet): Promise<Array<core.DashletModel>> {

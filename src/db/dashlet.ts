@@ -26,7 +26,7 @@ class Schema extends DBSchema {
 }
 
 const DashletSchema = new Schema({
-    dashletModel: { type: String, required: true },
+    moduleId: { type: String, required: true },
     dashboardId: { type: String, required: true },
     title: { type: String, required: false },
     description: { type: String, required: false },
