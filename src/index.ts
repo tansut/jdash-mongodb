@@ -47,25 +47,16 @@ export class MongoDbProvider implements IDBProvider {
 
         search.appid && (q.appid = { $in: search.appid });
         search.user && (q.user = { $in: search.user });
-        var baseQuery = this.dashboardModel.find(q).sort({ createdAt: -1 }).skip(query.startFrom).limit(query.limit);
-        var countQuery = this.dashboardModel.find(q).count();
+        var baseQuery = this.dashboardModel.find(q).sort({ createdAt: -1 }).skip(query.startFrom).limit(query.limit + 1); // 1 for haMore query
 
-        var selectQuery = baseQuery.then((dashEntities) => {
-            return dashEntities.map(this.dashDocumentToDashModel);
-        });
 
-        var resultPromise = Promise.all<any>([countQuery, baseQuery]).then((results) => {
-            var count = <number>results[0];
-            var models = <Array<DashboardModel>>results[1];
-
-            var hasMore = false;
-            if (query) {
-                if (query.limit + query.startFrom < count)
-                    hasMore = true;
-            } else {
-                hasMore = count > models.length;
+        return baseQuery.then((dashEntities) => {
+            var models = dashEntities.map(this.dashDocumentToDashModel);
+            var hasMore = false; 
+            if (models.length > query.limit){// hasMore check
+                hasMore = true;
+                models.splice(models.length -1,1); // remove +1 element from models
             }
-
             var returnValue = <QueryResult<DashboardModel>>{
                 data: models,
                 hasMore: hasMore
@@ -73,7 +64,6 @@ export class MongoDbProvider implements IDBProvider {
             return returnValue;
         });
 
-        return resultPromise;
     }
 
     getDashboard(appid: string, id: string): Promise<DashboardModel> {
