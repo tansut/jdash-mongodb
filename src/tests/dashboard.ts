@@ -20,9 +20,9 @@ export default function () {
                 },
                 user: Helper.testUser
             };
- 
+
             return provider.createDashboard(Helper.appid, dashboardCreateModel).then(result => {
-                dashboardCount++; 
+                dashboardCount++;
             })
         });
 
@@ -34,11 +34,15 @@ export default function () {
                     title: 'Foo title' + i,
                     description: 'eewrew',
                     id: "",
+                    layout: {
+                        moduleId: "grid"
+                    },
+                    config: {},
                     user: Helper.testUser
-                }; 
-                promises.push(provider.createDashboard(Helper.appid, dashboardCreateModel)); 
+                };
+                promises.push(provider.createDashboard(Helper.appid, dashboardCreateModel));
             }
-            return Promise.all(promises).then(function(){  
+            return Promise.all(promises).then(function () {
                 dashboardCount += promises.length;
             });
         });
@@ -49,11 +53,14 @@ export default function () {
                 title: 'Foo title',
                 description: 'eewrew',
                 id: "",
+                layout: {
+                    moduleId: "grid"
+                },
                 user: Helper.testUser
             }
- 
+
             return provider.createDashboard(Helper.appid, newDashboard).then(result => {
-                dashboardCount++;               
+                dashboardCount++;
                 return provider.getDashboard(Helper.appid, result.id);
             })
         });
@@ -92,7 +99,7 @@ export default function () {
 
         it('should have more dashboards', function () {
             var provider = Helper.provider;
- 
+
             return provider.searchDashboards({
                 appid: Helper.appid,
                 user: Helper.testUser
@@ -110,7 +117,7 @@ export default function () {
             }, { limit: 20, startFrom: 90 }).then((dashes) => {
                 var hasMore = true;
                 var length = 20;
-                if(dashboardCount > 90 + 20) {
+                if (dashboardCount > 90 + 20) {
                     length = dashboardCount - 90;
                     hasMore = false;
                 }
