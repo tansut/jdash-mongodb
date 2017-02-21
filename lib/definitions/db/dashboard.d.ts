@@ -4,15 +4,15 @@ import { DBModel, IDBDocument } from './';
 import * as mongoose from 'mongoose';
 export declare class DashboardEntity {
     appid: string;
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
     user: string;
     createdAt: Date;
     shareWith?: string;
-    config: {
+    config?: {
         [key: string]: any;
     };
-    layout: LayoutModel;
+    layout?: LayoutModel;
 }
 export interface IDashboardDocument extends DashboardEntity, IDBDocument {
 }

@@ -81,23 +81,30 @@ export class MongoDbProvider implements IDBProvider {
 
     }
 
-    getDashboard(appid: string, id: string): Promise<core.DashboardModel> {
-        return this.dashboardModel.findOne({ _id: id, appid: appid }).then((item) => { return this.dashDocumentToDashModel(item); });
+    getDashboard(appid: string, id: string): Promise<core.GetDashboardResult> {
+        return this.dashboardModel.findOne({ _id: id, appid: appid }).then((item) => {
+            var dashboard = this.dashDocumentToDashModel(item);
+            return this.searchDashlets({
+                dashboardId: dashboard.id
+            }).then(dashlets => {
+                return {
+                    dashboard: dashboard,
+                    dashlets: dashlets
+                }
+            })
+        });
     }
 
-    createDashboard(appid: string, model: core.DashboardCreateModel): Promise<core.CreateResult> {
+    createDashboard(model: core.DashboardModel): Promise<core.CreateResult> {
         var newEntity: DashboardEntity = {
-            appid: appid,
+            appid: model.appid,
             title: model.title,
             shareWith: model.shareWith,
             description: model.description,
             user: model.user,
-            createdAt: helper.utcNow(),
+            createdAt: model.createdAt,
             config: model.config || {},
-            layout: <LayoutModel>{
-                config: {},
-                dashlets: {}
-            }
+            layout: model.layout
         }
 
         return this.dashboardModel.create(newEntity).then(newDocument => {
@@ -116,23 +123,21 @@ export class MongoDbProvider implements IDBProvider {
 
     updateDashboard(appid: string, id: string, updateValues: core.DashboardUpdateModel): Promise<any> {
         return this.dashboardModel.findOne({ _id: id, appid: appid }).then((dashboard) => {
-            dashboard.config = updateValues.config;
-            dashboard.title = updateValues.title;
-            dashboard.shareWith = updateValues.shareWith;
-            dashboard.layout = updateValues.layout;
-            dashboard.description = updateValues.description;
+            Object.keys(updateValues).forEach(key => {
+                dashboard[key] = updateValues[key]
+            })
             return dashboard.save();
         });
     }
 
-    createDashlet(model: core.DashletCreateModel): Promise<core.CreateResult> {
+    createDashlet(model: core.DashletModel): Promise<core.CreateResult> {
         var newEntity: DashletEntity = {
             dashboardId: model.dashboardId,
             configuration: model.configuration || {},
             moduleId: model.moduleId,
             title: model.title,
             description: model.description,
-            createdAt: helper.utcNow()
+            createdAt: model.createdAt
         }
         return this.dashletModel.create(newEntity).then(newDocument => {
             var createResult: core.CreateResult = {
@@ -166,9 +171,9 @@ export class MongoDbProvider implements IDBProvider {
     }
     updateDashlet(id: string, updateValues: core.DashletUpdateModel): Promise<any> {
         return this.dashletModel.findById(id).then((dashlet) => {
-            dashlet.configuration = updateValues.configuration;
-            dashlet.description = updateValues.description;
-            dashlet.title = updateValues.title;
+            Object.keys(updateValues).forEach(key => {
+                dashlet[key] = updateValues[key]
+            })
             return dashlet.save();
         });
     }

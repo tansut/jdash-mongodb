@@ -30,7 +30,6 @@ const DashletSchema = new Schema({
     dashboardId: { type: String, required: true },
     title: { type: String, required: false },
     description: { type: String, required: false },
-    user: { type: String, required: true },
     createdAt: { type: Date, required: true },
     configuration: { type: Object, required: false }
 })

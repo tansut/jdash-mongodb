@@ -3,6 +3,7 @@ import * as mocha from 'mocha';
 
 import Helper from './helper';
 import * as jcore from 'jdash-core';
+
 var should = require('should');
 
 export default function () {
@@ -11,17 +12,21 @@ export default function () {
     describe('dashboard', function () {
         it('should create a dashboard', function () {
             var provider = Helper.provider;
-            var dashboardCreateModel: DashboardCreateModel = {
+            var model: DashboardModel = {
                 title: 'Foo title',
                 description: 'eewrew',
-                id: "",
+                createdAt: Helper.utcNow(),
+                appid: Helper.appid,
                 layout: {
                     moduleId: 'foo'
                 },
-                user: Helper.testUser
+                user: Helper.testUser,
+                config: {},
+                id: null,
+                shareWith: null
             };
 
-            return provider.createDashboard(Helper.appid, dashboardCreateModel).then(result => {
+            return provider.createDashboard(model).then(result => {
                 dashboardCount++;
             })
         });
@@ -30,17 +35,20 @@ export default function () {
             var provider = Helper.provider;
             var promises = [];
             for (var i = 0; i < 100; i++) {
-                var dashboardCreateModel: DashboardCreateModel = {
-                    title: 'Foo title' + i,
+                var model: DashboardModel = {
+                    title: 'Foo title',
                     description: 'eewrew',
-                    id: "",
+                    createdAt: Helper.utcNow(),
+                    appid: Helper.appid,
                     layout: {
-                        moduleId: "grid"
+                        moduleId: 'foo'
                     },
+                    user: Helper.testUser,
                     config: {},
-                    user: Helper.testUser
+                    id: null,
+                    shareWith: null
                 };
-                promises.push(provider.createDashboard(Helper.appid, dashboardCreateModel));
+                promises.push(provider.createDashboard(model));
             }
             return Promise.all(promises).then(function () {
                 dashboardCount += promises.length;
@@ -49,17 +57,21 @@ export default function () {
 
         it('should create and gets the dashboard', function () {
             var provider = Helper.provider;
-            var newDashboard: DashboardCreateModel = {
+            var model: DashboardModel = {
                 title: 'Foo title',
                 description: 'eewrew',
-                id: "",
+                createdAt: Helper.utcNow(),
+                appid: Helper.appid,
                 layout: {
-                    moduleId: "grid"
+                    moduleId: 'foo'
                 },
-                user: Helper.testUser
-            }
+                user: Helper.testUser,
+                config: {},
+                id: null,
+                shareWith: null
+            };
 
-            return provider.createDashboard(Helper.appid, newDashboard).then(result => {
+            return provider.createDashboard(model).then(result => {
                 dashboardCount++;
                 return provider.getDashboard(Helper.appid, result.id);
             })
