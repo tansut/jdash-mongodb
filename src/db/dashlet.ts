@@ -35,19 +35,12 @@ const DashletSchema = new Schema({
 })
 
 DashletSchema.index({
-    appid: 1,
-    user: 1
+    dashboardId: 1,
 }, {});
 
 DashletSchema.index({
-    appid: 1,
+    dashboardId: 1,
     createdAt: 1
-}, {});
-
-
-DashletSchema.index({
-    appid: 1,
-    shareWith: 1
 }, {});
 
 
