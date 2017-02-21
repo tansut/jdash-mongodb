@@ -56,6 +56,6 @@ export let DashletEntityModel: DBModel<IDashletDocument>;
 
 
 export default (conn: mongoose.Connection) => {
-    DashletEntityModel = conn.model<IDashletDocument>('jdash_dashboard', DashletSchema);
+    DashletEntityModel = conn.model<IDashletDocument>('jdash_dashlet', DashletSchema);
     return DashletEntityModel;
 };
