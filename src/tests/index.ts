@@ -1,6 +1,7 @@
 import * as mocha from 'mocha';
 import Helper from './helper';
 import dashboardtests from './dashboard';
+import dashlettests from './dashlet';
 require('should');
 
 describe('jdash-mongodb Tests', function () {
@@ -14,6 +15,7 @@ describe('jdash-mongodb Tests', function () {
         }).catch(err => done(err))
     });
     dashboardtests();
+    dashlettests();
     after(function () {
 
     });

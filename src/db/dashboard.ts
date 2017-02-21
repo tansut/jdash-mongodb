@@ -7,13 +7,13 @@ import { ObjectID } from 'mongodb';
 
 export class DashboardEntity {
     appid: string;
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
     user: string;
     createdAt: Date;
     shareWith?: string;
-    config: { [key: string]: any };
-    layout: LayoutModel
+    config?: { [key: string]: any };
+    layout?: LayoutModel
 }
 
 export interface IDashboardDocument extends DashboardEntity, IDBDocument {
