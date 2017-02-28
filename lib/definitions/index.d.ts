@@ -19,12 +19,12 @@ export declare class MongoDbProvider implements IDBProvider {
     private dashletDocumentToModel(e);
     searchDashboards(search: ISearchDashboard, query?: core.Query): Promise<core.QueryResult<core.DashboardModel>>;
     getDashboard(appid: string, id: string): Promise<core.GetDashboardResult>;
-    createDashboard(model: core.DashboardModel): Promise<core.CreateResult>;
+    createDashboard(appid: string, model: core.DashboardModel): Promise<core.CreateResult>;
     deleteDashboard(appid: string, id: string): Promise<any>;
     updateDashboard(appid: string, id: string, updateValues: core.DashboardUpdateModel): Promise<any>;
     createDashlet(model: core.DashletCreateModel): Promise<core.CreateResult>;
     searchDashlets(search: ISearchDashlet): Promise<Array<core.DashletModel>>;
-    deleteDashlet(id: string): Promise<any>;
+    deleteDashlet(id: string | Array<string>): Promise<any>;
     updateDashlet(id: string, updateValues: core.DashletUpdateModel): Promise<any>;
 }
 declare var _default: (options: IProviderOptions) => MongoDbProvider;
