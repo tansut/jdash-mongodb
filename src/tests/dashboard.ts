@@ -26,7 +26,7 @@ export default function () {
                 shareWith: null
             };
 
-            return provider.createDashboard(Helper.appid, model).then(result => {
+            return provider.createDashboard(model).then(result => {
                 dashboardCount++;
             })
         });
@@ -48,7 +48,7 @@ export default function () {
                     id: null,
                     shareWith: null
                 };
-                promises.push(provider.createDashboard(Helper.appid, model));
+                promises.push(provider.createDashboard(model));
             }
             return Promise.all(promises).then(function () {
                 dashboardCount += promises.length;
@@ -71,7 +71,7 @@ export default function () {
                 shareWith: null
             };
 
-            return provider.createDashboard(Helper.appid, model).then(result => {
+            return provider.createDashboard(model).then(result => {
                 dashboardCount++;
                 return provider.getDashboard(Helper.appid, result.id);
             })

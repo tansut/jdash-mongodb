@@ -95,9 +95,9 @@ export class MongoDbProvider implements IDBProvider {
         });
     }
 
-    createDashboard(appid: string, model: core.DashboardModel): Promise<core.CreateResult> {
+    createDashboard(model: core.DashboardModel): Promise<core.CreateResult> {
         var newEntity: DashboardEntity = {
-            appid: appid,
+            appid: model.appid,
             title: model.title,
             shareWith: model.shareWith,
             description: model.description,

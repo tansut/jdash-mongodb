@@ -27,7 +27,7 @@ export default function () {
                 shareWith: null
             };
 
-            return provider.createDashboard(Helper.appid,model).then(result => {
+            return provider.createDashboard(model).then(result => {
                 dashboardId = result.id
             })
         });
