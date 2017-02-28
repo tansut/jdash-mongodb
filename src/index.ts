@@ -124,8 +124,7 @@ export class MongoDbProvider implements IDBProvider {
     updateDashboard(appid: string, id: string, updateValues: core.DashboardUpdateModel): Promise<any> {
         return this.dashboardModel.findOne({ _id: id, appid: appid }).then((dashboard) => {
             Object.keys(updateValues).forEach(key => {
-                if (dashboard.hasOwnProperty(key))
-                    dashboard[key] = updateValues[key]
+                dashboard[key] = updateValues[key]
             });
             return dashboard.save();
         });
