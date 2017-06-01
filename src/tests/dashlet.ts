@@ -34,13 +34,12 @@ export default function () {
 
         it('should create a dashlet without config', function () {
             var provider = Helper.provider;
-            var createModel: DashletModel = {
+            var createModel: DashletCreateModel = {
                 moduleId: 'rss-dashlet',
                 title: 'Foo title',
                 description: 'eewrew',
                 id: "",
                 dashboardId: dashboardId,
-                createdAt: Helper.utcNow()
             };
 
             return provider.createDashlet(createModel).then(result => {
@@ -71,7 +70,7 @@ export default function () {
         it('should get dashlets of dashboard', function () {
             var provider = Helper.provider;
             return provider.getDashboard(Helper.appid, dashboardId).then(result => {
-                result.dashlets.should.have.property('length').be.eql(2);
+                result.dashlets["should"].have.property('length').be.eql(2);
             })
         });
 

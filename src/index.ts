@@ -102,7 +102,7 @@ export class MongoDbProvider implements IDBProvider {
             shareWith: model.shareWith,
             description: model.description,
             user: model.user,
-            createdAt: model.createdAt,
+            createdAt: helper.utcNow(),
             config: model.config || {},
             layout: model.layout
         }
@@ -125,26 +125,30 @@ export class MongoDbProvider implements IDBProvider {
         return this.dashboardModel.findOne({ _id: id, appid: appid }).then((dashboard) => {
             Object.keys(updateValues).forEach(key => {
                 dashboard[key] = updateValues[key]
-            })
+            });
             return dashboard.save();
         });
     }
 
-    createDashlet(model: core.DashletModel): Promise<core.CreateResult> {
+    createDashlet(model: core.DashletCreateModel): Promise<core.CreateResult> {
         var newEntity: DashletEntity = {
             dashboardId: model.dashboardId,
             configuration: model.configuration || {},
             moduleId: model.moduleId,
             title: model.title,
             description: model.description,
-            createdAt: model.createdAt
+            createdAt: helper.utcNow()
         }
+
         return this.dashletModel.create(newEntity).then(newDocument => {
             var createResult: core.CreateResult = {
                 id: newDocument._id.toString()
             };
             return createResult;
-        })
+        }).catch((err) => {
+            console.log(err);
+            throw err;
+        });
     }
 
     searchDashlets(search: ISearchDashlet): Promise<Array<core.DashletModel>> {
@@ -164,10 +168,20 @@ export class MongoDbProvider implements IDBProvider {
         });
     }
 
-    deleteDashlet(id: string): Promise<any> {
-        return this.dashletModel.findById(id).then((dashletModel) => {
-            return dashletModel.remove();
-        });
+    deleteDashlet(id: string | Array<string>): Promise<any> {
+        if (id instanceof Array) {
+            return this.dashletModel.find({
+                _id: { $in: id }
+            }).then((dashlets) => {
+                var removePromises = [];
+                dashlets.forEach(c => { removePromises.push(c.remove()) });
+                return removePromises;
+            })
+        } else {
+            return this.dashletModel.findById(id).then((dashletModel) => {
+                return dashletModel.remove();
+            });
+        }
     }
     updateDashlet(id: string, updateValues: core.DashletUpdateModel): Promise<any> {
         return this.dashletModel.findById(id).then((dashlet) => {
