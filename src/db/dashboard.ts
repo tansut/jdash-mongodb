@@ -35,8 +35,9 @@ const DashboardSchema = new Schema({
     shareWith: { type: String, required: false },
     user: { type: String, required: true },
     createdAt: { type: Date, required: true },
-    layout: { type: Object, required: true }
-})
+    layout: { type: Object, required: true },
+    config: { type: Object, required: false }
+}, { strict: false })
 
 DashboardSchema.index({
     appid: 1,

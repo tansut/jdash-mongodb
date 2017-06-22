@@ -32,7 +32,7 @@ const DashletSchema = new Schema({
     description: { type: String, required: false },
     createdAt: { type: Date, required: true },
     configuration: { type: Object, required: false }
-})
+}, { strict: false })
 
 DashletSchema.index({
     dashboardId: 1,
